@@ -101,24 +101,24 @@ namespace CalculatorMVC
             double rightOpVal;
 
             if (
-                 Double.TryParse(leftOpAcum, System.Globalization.NumberStyles.AllowDecimalPoint, null, out leftOpVal) &&
-                 Double.TryParse(rightOpAcum, System.Globalization.NumberStyles.AllowDecimalPoint, null, out rightOpVal)
+                 !Double.TryParse(leftOpAcum, System.Globalization.NumberStyles.AllowDecimalPoint, null, out leftOpVal) ||
+                 !Double.TryParse(rightOpAcum, System.Globalization.NumberStyles.AllowDecimalPoint, null, out rightOpVal)
                 )
+                return;
+
+            mModel.LeftOp = leftOpVal;
+            mModel.SecondOp = rightOpVal;
+
+            switch(opType)
             {
-                mModel.LeftOp = leftOpVal;
-                mModel.SecondOp = rightOpVal;
+                case '+': mModel.PerformAddition(); break;
+                case '-': mModel.PerformSubtraction(); break;
+                case 'X': mModel.PerformMultiplication(); break;
+                case '/': mModel.PerformDivition(); break;
 
-                switch(opType)
-                {
-                    case '+': mModel.PerformAddition(); break;
-                    case '-': mModel.PerformSubtraction(); break;
-                    case 'X': mModel.PerformMultiplication(); break;
-                    case '/': mModel.PerformDivition(); break;
-
-                    // We should never get here
-                    default: return;
-                }
-            }
+                // We should never get here
+                default: return;
+            }            
         }
 
         public void HandleTryAdd(char input)
